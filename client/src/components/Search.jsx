@@ -8,23 +8,56 @@ export default function Search({ socket, username, userId, selectedRoom, setSele
     setRoom(selectedRoom || "");
   }, [selectedRoom]);
 
-  const joinRoom = () => {
-    if (room.length !== 0) {
-      socket.emit("joinRoom", room);
-  
-      axios.post(`http://localhost:5000/chatRoom/${userId}`, {
-        room: room,
-        userId: userId
-      }).then(() => {
-        setSelectedRoom(room);
-        fetchUpdatedRooms();
-      }).catch((error) => {
-        console.error(error);
-      });
-    } else {
-      alert("Room field empty");
+
+  const joinRoom = async () => {
+    try {
+      socket.emit("joinRoom", room)
+      const getRoomResponse = await axios.get("http://localhost:5000/chatRoom/getRoom")
+      if(getRoomResponse){
+        //if the chat already exists
+       const existingRoom = getRoomResponse.data.find(theroom => theroom.room === room)
+        if(existingRoom){
+          const roomId = existingRoom._id;
+          try {
+            await axios.post(`http://localhost:5000/addChatUser/${roomId}/${userId}`)
+              setSelectedRoom(room);
+              fetchUpdatedRooms();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        //if the chat does not exists
+        else{
+          try {
+            const response = await axios.post("http://localhost:5000/chatRoom/addRoom", {
+              room : room
+            })
+            if(response){
+              const getChatResponse = await axios.get("http://localhost:5000/chatRoom/getRoom")
+              if(getChatResponse){
+                const newRoom = getChatResponse.data.find(theroom => theroom.room === room)
+                if (newRoom) {
+                  const newRoomId = newRoom._id
+                  try {
+                    await axios.post(`http://localhost:5000/addChatUser/${newRoomId}/${userId}`)
+                      setSelectedRoom(room);
+                      fetchUpdatedRooms();
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
+              }
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+
 
   return (
     <>

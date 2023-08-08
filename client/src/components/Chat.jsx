@@ -1,29 +1,54 @@
 import React, {useState, useMemo, useEffect} from 'react'
 import ScrollToBottom from "react-scroll-to-bottom";
+import axios from "axios";
 
-export default function Chat({username, socket, room}) {
+export default function Chat({username, userId, socket, room, roomId}) {
   
       const [message, setMessage] = useState("");
       const [messageList, setMessageList] = useState([]);
+      const time = new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
 
-    useMemo(()=>{
-      socket.on("recieveMessage", (messageData)=>{
-        setMessageList((list)=> [...list, messageData])
-      })
-    },[socket])
+      const fetchAndDisplayMessages = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/getMessage/${roomId}`);
+          console.log(response.data);
+          setMessageList(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      useMemo(()=>{
+        socket.on("recieveMessage", (messageData)=>{
+          setMessageList((list)=> [...list, messageData])
+          console.log(messageData);
+        })
+
+        fetchAndDisplayMessages();
+        
+      },[socket, roomId, userId])
+
 
     const sendMessage = async() => {
       if(message.length!==0){
         const messageData = {
-          room : room,
-          username : username,
+          roomid : roomId,
+          userid : userId,
           message : message,
-          time : new Date(Date.now()).getHours() + 
-          ":" + new Date(Date.now()).getMinutes()
+          time : time
         }
         await socket.emit("sendMessage", messageData);
         setMessageList((list)=>[...list, messageData]);
         setMessage("")
+
+        await axios.post(`http://localhost:5000/addMessage/${roomId}/${userId}`,{
+          message : message,
+          time : time
+        }).then((result) => {
+          console.log(result.data);
+        }).catch((err) => {
+          console.log(err);
+        });
       }
       else{
         alert("message is empty")
@@ -43,14 +68,14 @@ export default function Chat({username, socket, room}) {
                 <div
                   key={messageContent.time}
                   className="message custom-text"
-                  id={username === messageContent.username ? "you" : "other"}
+                  id={userId === messageContent.userid ? "you" : "other"}
                 >
                   <div>
                     <div className="message-content">
                       <p>{messageContent.message}</p>
                     </div>
                     <div className="message-meta">
-                      <p id="author">{messageContent.username}</p>
+                      <p id="author">{messageContent.userid}</p>
                       <p id="time">{messageContent.time}</p>
                     </div>
                   </div>
