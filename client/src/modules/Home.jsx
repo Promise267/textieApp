@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Chat from "../components/Chat";
+import Chats from "../components/Chats";
 import Search from '../components/Search';
 import io from "socket.io-client";
 import Cookies from 'js-cookie';
 import axios from "axios";
-import Chats from "../components/Chats";
-import Chat from "../components/Chat";
 
 const socket = io.connect("http://localhost:5000");
 
@@ -17,34 +17,34 @@ export default function Home() {
   const [room, setRoom] = useState([]);
   const [userId, setUserId] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
 
   useEffect(() => {
     socket.emit("login");
 
-    axios.get("http://localhost:5000/user/getUser")
-      .then((response) => {
-        const foundUser = response.data.find(user => user.username === username)
+    const fetchData = async () => {
+      try {
+        const userResponse = await axios.get("http://localhost:5000/user/getUser");
+        const foundUser = userResponse.data.find(user => user.username === username);
         if (foundUser) {
-          setUserId(foundUser._id)
+          setUserId(foundUser._id);
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
-    axios.get("http://localhost:5000/chatRoom/getRoom")
-      .then((response) => {
-        console.log(response.data);
-        const foundRooms = response.data.filter((room) => room.userId === userId);
+        const chatUserResponse = await axios.get(`http://localhost:5000/getChatUser/${userId}`);
+        const chatRoomIds = chatUserResponse.data.map(room => room.roomid);
+
+        const chatRoomsResponse = await axios.get("http://localhost:5000/chatRoom/getRoom");
+        const foundRooms = chatRoomsResponse.data.filter(room => chatRoomIds.includes(room._id));
+        
         if (foundRooms.length > 0) {
-          setRoom(foundRooms);
-          console.log(foundRooms);
+          setRoom(foundRooms.map((room) => ({id: room._id, name: room.room})));
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    }
 
+    fetchData();
   }, [userId, username]);
 
 
@@ -69,24 +69,28 @@ export default function Home() {
   };
 
 
-  const openChat = (room) => {
+  const openChat = (id, room) => {
+    setSelectedRoomId(id)
     setSelectedRoom(room);
     socket.emit("joinRoom", room)
   };
 
 
-  const fetchUpdatedRooms = () => {
-    axios.get("http://localhost:5000/chatRoom/getRoom")
-      .then((response) => {
-        const foundRooms = response.data.filter((room) => room.userId === userId);
+  const fetchUpdatedRooms = async() => {
+    try {
+        const chatUserResponse = await axios.get(`http://localhost:5000/getChatUser/${userId}`);
+        const chatRoomIds = chatUserResponse.data.map(room => room.roomid);
+
+        const chatRoomsResponse = await axios.get("http://localhost:5000/chatRoom/getRoom");
+        const foundRooms = chatRoomsResponse.data.filter(room => chatRoomIds.includes(room._id));
+        
         if (foundRooms.length > 0) {
-          setRoom(foundRooms);
+          setRoom(foundRooms.map(room => room.room));
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    } catch (error) {
+      console.log(error);
+    }
+  }; 
 
   return (
     <>
@@ -107,8 +111,10 @@ export default function Home() {
                />
             {selectedRoom && 
               <Chat socket={socket} 
-              username={username} 
-              room={selectedRoom} 
+              userId = {userId}
+              username = {username} 
+              room={selectedRoom}
+              roomId = {selectedRoomId}
               />}
           </div>
         </div>

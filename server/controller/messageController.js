@@ -3,7 +3,8 @@ const Message = require("../model/message");
 
 module.exports = {
     get : (req, res)=>{
-        Message.find().then((data) => {
+        const {roomid} = req.params;
+        Message.find({roomid : roomid}).then((data) => {
             res.send(data);
             
         }).catch((err) => {
@@ -25,10 +26,10 @@ module.exports = {
         const {message, time} = req.body;
 
         const newMessage = new Message({
-            message,
-            time,
             userid : userid,
-            roomid : roomid
+            roomid : roomid,
+            message,
+            time
         })
 
         newMessage.save().then((data) => {

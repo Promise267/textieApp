@@ -4,7 +4,8 @@ const User = require("../model/user");
 
 module.exports = {
     get : (req, res)=>{
-        chatRoomUser.find().then((data) => {
+        const {userid} = req.params
+        chatRoomUser.find({userid : userid}).then((data) => {
             res.send(data);
         }).catch((err) => {
             res.send(err);
@@ -28,7 +29,7 @@ module.exports = {
             })
 
             chatRoomUser.find({roomid : roomid, userid : userid}).then((existingUser) => {
-                if(existingUser){
+                if(existingUser.length > 0){
                     res.status(409).json({message : "User already joined"})
                 }
                 else{
