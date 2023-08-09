@@ -18,16 +18,6 @@ export default function Chat({username, userId, socket, room, roomId}) {
         }
       };
 
-      useMemo(()=>{
-        socket.on("recieveMessage", (messageData)=>{
-          setMessageList((list)=> [...list, messageData])
-          console.log(messageData);
-        })
-
-        fetchAndDisplayMessages();
-        
-      },[socket, roomId, userId])
-
 
     const sendMessage = async() => {
       if(message.length!==0){
@@ -55,11 +45,20 @@ export default function Chat({username, userId, socket, room, roomId}) {
       }
     }
 
+    useEffect(()=>{
+      socket.on("recieveMessage", (messageData)=>{
+        setMessageList((list)=> [...list, messageData])
+      })
+
+      fetchAndDisplayMessages();
+      
+    },[socket, roomId, userId])
+
   return (
     <>
         <div className="chat-window">
           <div className="chat-header">
-            <h1 className="custom-text">Chat Room: {room}</h1>
+            <h1 className="custom-text">{room}</h1>
           </div>
           <div className="chat-body">
             <ScrollToBottom className="message-container">
