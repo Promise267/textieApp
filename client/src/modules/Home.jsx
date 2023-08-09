@@ -85,7 +85,7 @@ export default function Home() {
         const foundRooms = chatRoomsResponse.data.filter(room => chatRoomIds.includes(room._id));
         
         if (foundRooms.length > 0) {
-          setRoom(foundRooms.map(room => room.room));
+          setRoom(foundRooms.map((room) => ({id: room._id, name: room.room})));
         }
     } catch (error) {
       console.log(error);
@@ -107,6 +107,7 @@ export default function Home() {
               username={username} 
               userId={userId} 
               setSelectedRoom={setSelectedRoom}
+              setSelectedRoomId={setSelectedRoomId}
               fetchUpdatedRooms={fetchUpdatedRooms}
                />
             {selectedRoom && 
