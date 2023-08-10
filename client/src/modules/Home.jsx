@@ -97,9 +97,15 @@ export default function Home() {
       <div className="container-fluid">
         <div className="row">
           <div className="sidebar col-2">
-            <h3 className="heading-display custom-text">{username}</h3>
-            <button type="submit" className="logoutbtn w-100" onClick={logout}>Logout</button>
-            <Chats rooms={room} openChat={openChat}/>
+            <div className="sidebar-heading">
+            <h3 className="heading-display custom-text usernameSpace">{username}</h3>
+            </div>
+            <div className="sidebar-body">
+              <Chats rooms={room} openChat={openChat}/>
+            </div>
+            <div className="sidebar-footer">
+              <button type="submit" className="logoutbtn w-100" onClick={logout}>Logout</button>
+            </div>
           </div>
           <div className="chat col-10">
             <Search 

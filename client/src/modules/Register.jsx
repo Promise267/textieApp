@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import {useNavigate, Link} from "react-router-dom"
 import axios from "axios"
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
+import loginImage from "../assets/Register.png"
 
 export default function Register() {
     const navigate = useNavigate()
@@ -53,9 +54,15 @@ export default function Register() {
   return (
     <>
     <div className="container-wrapper">
-        <h1 className="heading-display custom-text mb-5">Sign Up</h1>
+    <div className="container-two">
+        <div>
+            <img src={loginImage} />
+        </div>
+    </div>
+    <div className="container-one">
         <div className="register-container">
             <form onSubmit={registerUser}>
+                <h1 className="heading-display custom-text mb-5">Become A Texite</h1>
                 <div className="formGroup">
                     <input type="text" className = "inputBox custom-text" 
                         name="email"
@@ -96,6 +103,7 @@ export default function Register() {
                 <p className="form-meta custom-text">Don't have an account? <Link to={"/login"}><span className="link">Sign In</span></Link></p>
             </form>
         </div>
+    </div>
     </div>
     </>
   )

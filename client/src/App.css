@@ -10,7 +10,27 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-direction: column;
+    flex-direction: row;
+    padding: 40px;
+}
+
+.container-two img {
+    max-width: 75%; /* Make the image responsive */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (max-width: 868px) {
+    .container-wrapper {
+        flex-direction: column; /* Stack containers vertically on smaller screens */
+        padding: 40px;
+    }
+    
+    .container-two {
+        margin-top: 10px; /* Adjust this value as needed */
+        margin-bottom: 10px; /* Adjust this value as needed */
+    }
 }
 
 .login-container {
@@ -115,7 +135,7 @@
 }
 
 .loginbtn{
-    background-color: orange;
+    background-color: #6C6CFF;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -125,7 +145,7 @@
 }
 
 .loginbtn:hover{
-    background-color: purple;
+    background-color: #FF3871;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -133,7 +153,7 @@
 }
 
 .registerbtn{
-    background-color: orange;
+    background-color: #6C6CFF;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -143,7 +163,7 @@
 }
 
 .registerbtn:hover{
-    background-color: purple;
+    background-color: #FF3871;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -151,7 +171,7 @@
 }
 
 .logoutbtn{
-    background-color: orange;
+    background-color: #FF3871;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -161,7 +181,7 @@
 }
 
 .logoutbtn:hover{
-    background-color: purple;
+    background-color: #6C6CFF;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -169,7 +189,7 @@
 }
 
 .joinbtn{
-    background-color: purple;
+    background-color: #6C6CFF;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -180,7 +200,7 @@
 }
 
 .joinbtn:hover{
-    background-color: orange;
+    background-color: #FF3871;
     border: none;
     border-radius: 5px;
     padding: 5px;
@@ -195,17 +215,24 @@
 
 .form-meta .link{
     font-size: 12px;
-    color: orange;
+    color: #FF3871;
     text-decoration: underline;
 }
 
 .heading-display{
     color: gray;
+    margin-bottom: 50px;
+    font-size: 30px;
 }
 
 .sidebar{
     height: 100vh;
 }
+
+.sidebar-body{
+    margin-top: 100px;
+}
+
 
 .chat{
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5)
@@ -218,6 +245,8 @@
     cursor: pointer;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
     transition: 0.2s;
+    background-color: #6C6CFF;
+    color: white
 }
 
 .roomContainer:hover{
@@ -226,7 +255,7 @@
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
-    background-color: purple;
+    background-color: #FF3871;
     color: white;
 }
 
@@ -237,13 +266,12 @@
 }
 
 .chat-window .chat-header {
-    height: 45px;
-    border-radius: 6px;
-    background: orange;
-    color: white;
+    background: #F8F8F8;
+    color: black;
     position: relative;
-    text-align: center;
-    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .chat-window .chat-header p {
@@ -259,7 +287,6 @@
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
     background: #fff;
     position: relative;
-    border-radius: 5px;
 }
 .chat-window .chat-body .message-container {
     width: 100%;
@@ -337,6 +364,15 @@
     font-size: 12px;
 }
 
+.chat-window .chat-footer {
+    height: 40px;
+    background-color: #F8F8F8;
+    display: flex;
+    border-radius: 0px 5px 5px 0px;
+    margin-top: 20px;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
 .chat-window .chat-footer button {
     border: 0;
     display: grid;
@@ -357,13 +393,6 @@
 
 }
 
-.chat-window .chat-footer {
-    margin-top: 10px;
-    height: 40px;
-    background-color: wheat;
-    display: flex;
-    border-radius: 5px;
-}
 
 .chat-window .chat-footer .sendbtn:hover{
     background-color: orange;
