@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom"
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Cookies from "js-cookie"; 
+import loginImage from "../assets/Login.png"
 
 export default function Login() {
 
@@ -53,36 +54,42 @@ export default function Login() {
   }
   return (
     <>
-    
     <div className="container-wrapper">
-      <h1 className="heading-display custom-text mb-5">Sign In</h1>
-      <div className="login-container">
-        <form onSubmit={login}>
-          <div className="formGroup">
-            <input
-              type="text"
-              className="inputBox custom-text"
-              name="username"
-              placeholder="Username"
-              onChange={handleChange}
-              value={creds.username}
-            />
-          </div>
-          <div className="formGroup">
-            <input
-              type="text"
-              className="inputBox custom-text"
-              name="password"
-              placeholder="Password"
-              onChange={handleChange}
-              value={creds.password}
-            />
-          </div>
-          <button type="submit" className="loginbtn w-100 custom-text">
-            Login
-          </button>
-          <p className="form-meta custom-text">Don't have an account? <Link to={"/register"}><span className="link">Sign Up</span></Link></p>
-        </form>
+      <div className="container-two">
+        <div>
+          <img src={loginImage} />
+        </div>
+      </div>
+      <div className="container-one">
+        <div className="login-container">
+          <form onSubmit={login}>
+            <h1 className="heading-display">Start Chatting</h1>
+            <div className="formGroup">
+              <input
+                type="text"
+                className="inputBox custom-text"
+                name="username"
+                placeholder="Username"
+                onChange={handleChange}
+                value={creds.username}
+              />
+            </div>
+            <div className="formGroup">
+              <input
+                type="text"
+                className="inputBox custom-text"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                value={creds.password}
+              />
+            </div>
+            <button type="submit" className="loginbtn w-100 custom-text">
+              Login
+            </button>
+            <p className="form-meta custom-text">Don't have an account? <Link to={"/register"}><span className="link">Sign Up</span></Link></p>
+          </form>
+        </div>
       </div>
     </div>
     </>

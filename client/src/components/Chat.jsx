@@ -3,7 +3,7 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 
 export default function Chat({username, userId, socket, room, roomId}) {
-  
+
       const [message, setMessage] = useState("");
       const [messageList, setMessageList] = useState([]);
       const time = new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
