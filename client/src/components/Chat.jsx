@@ -1,6 +1,7 @@
 import React, {useState, useMemo, useEffect} from 'react'
 import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
+import textieLogo from "../assets/Textie.png"
 
 export default function Chat({username, userId, socket, room, roomId}) {
 
@@ -28,7 +29,8 @@ export default function Chat({username, userId, socket, room, roomId}) {
           time : time
         }
         await socket.emit("sendMessage", messageData);
-        setMessageList((list)=>[...list, messageData]);
+        // setMessageList((list)=>[...list, messageData]);
+        setMessageList(messageData);
         setMessage("")
 
         await axios.post(`http://localhost:5000/addMessage/${roomId}/${userId}`,{
@@ -47,7 +49,8 @@ export default function Chat({username, userId, socket, room, roomId}) {
 
     useEffect(()=>{
       socket.on("recieveMessage", (messageData)=>{
-        setMessageList((list)=> [...list, messageData])
+        setMessageList(messageData)
+        // setMessageList((list)=> [...list, messageData])
       })
 
       fetchAndDisplayMessages();
@@ -58,7 +61,13 @@ export default function Chat({username, userId, socket, room, roomId}) {
     <>
         <div className="chat-window">
           <div className="chat-header">
-            <h1 className="custom-text">{room}</h1>
+            <div className="first-item">
+              <img src="../" className="m-3 rounded-circle img-responsive p-4 border border-grey" />
+              <h1 className="custom-text my-4">{room}</h1>
+            </div>
+            <div className="second-item">
+              <img src={textieLogo} className=" img-responsive p-3" />
+            </div>
           </div>
           <div className="chat-body">
             <ScrollToBottom className="message-container">
@@ -69,9 +78,14 @@ export default function Chat({username, userId, socket, room, roomId}) {
                   className="message custom-text"
                   id={userId === messageContent.userid ? "you" : "other"}
                 >
-                  <div>
-                    <div className="message-content">
-                      <p>{messageContent.message}</p>
+                  <div className="message-body">
+                    <div className="message-data">
+                      <div className="message-image">
+                        <img src="../" className="rounded-circle img-responsive p-2 border border-grey" />
+                      </div>
+                      <div className="message-content">
+                        <p>{messageContent.message}</p>
+                      </div>
                     </div>
                     <div className="message-meta">
                       <p id="author">{messageContent.userid}</p>

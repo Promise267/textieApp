@@ -63,7 +63,7 @@ export default function Login() {
       <div className="container-one">
         <div className="login-container">
           <form onSubmit={login}>
-            <h1 className="heading-display">Start Chatting</h1>
+            <h1 className="heading-display custom-text">Start Chatting</h1>
             <div className="formGroup">
               <input
                 type="text"

@@ -1,5 +1,6 @@
 import React, { useEffect,  useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import Chat from "../components/Chat";
 import Chats from "../components/Chats";
 import Search from '../components/Search';
@@ -98,10 +99,13 @@ export default function Home() {
         <div className="row">
           <div className="sidebar col-2">
             <div className="sidebar-heading">
-            <h3 className="heading-display custom-text usernameSpace">{username}</h3>
+              <img src="../" className="m-2 rounded-circle img-responsive p-4 border border-grey" />
+              <h3 className="heading-display custom-text usernameSpace text-light">{username}</h3>
             </div>
-            <div className="sidebar-body">
-              <Chats rooms={room} openChat={openChat}/>
+              <div className="sidebar-body">
+              <ScrollToBottom className="message-container">
+                <Chats rooms={room} openChat={openChat}/>
+              </ScrollToBottom>
             </div>
             <div className="sidebar-footer">
               <button type="submit" className="logoutbtn w-100" onClick={logout}>Logout</button>
